@@ -45,8 +45,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['Fira Sans', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['Fira Code', 'Cascadia Code', 'Consolas', 'monospace'],
+        sans: ['Inter', 'PingFang SC', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['Fira Code', 'ui-monospace', 'monospace'],
       },
       borderRadius: {
         lg: 'var(--radius)',

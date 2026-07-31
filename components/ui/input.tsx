@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 
 const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   ({ className, type, ...props }, ref) => (
-    <input type={type} className={cn('flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 disabled:cursor-not-allowed disabled:opacity-50', className)} ref={ref} {...props} />
+    <input type={type} className={cn('flex h-9 w-full rounded-xl border border-white/[0.06] bg-white/[0.04] px-3 py-1 text-sm text-white shadow-sm transition-colors placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#3B82F6]/30 disabled:cursor-not-allowed disabled:opacity-50', className)} ref={ref} {...props} />
   )
 )
 Input.displayName = 'Input'
