@@ -1,7 +1,4 @@
 {
-  "env": {
-    "ECC_DISABLED_HOOKS": "pre:edit-write:gateguard-fact-force,pre:bash:gateguard-fact-force"
-  },
   "permissions": {
     "allow": [
       "Bash(npx create-next-app@14 . --typescript --tailwind --eslint --app --src-dir=false --import-alias=\"@/*\" --no-turbopack)",
@@ -27,7 +24,8 @@
       "Bash(mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/components/layout\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/components/dashboard\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/components/projects\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/components/settings\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/components/shared\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/hooks\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/app/projects/[id]\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/app/settings\" && echo \"directories created\")",
       "Bash(ECC_GATEGUARD=off bash -c ' *)",
       "Skill(update-config)",
-      "Skill(update-config:*)"
+      "Skill(update-config:*)",
+      "Bash(npx prisma *)"
     ],
     "additionalDirectories": [
       "d:\\项目管理\\项目管理系统\\.claude\\worktrees\\feat-project-manager\\.claude",
