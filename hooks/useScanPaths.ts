@@ -7,7 +7,7 @@ export function useScanPaths() {
 
   const fetchPaths = useCallback(async () => {
     setIsLoading(true)
-    const res = await fetch("/api/scan-paths")
+    const res = await fetch("/api/plugins/scan-paths")
     const json = await res.json()
     if (json.success) setPaths(json.data)
     setIsLoading(false)
@@ -16,7 +16,7 @@ export function useScanPaths() {
   useEffect(() => { fetchPaths() }, [fetchPaths])
 
   const create = async (path: string) => {
-    const res = await fetch("/api/scan-paths", {
+    const res = await fetch("/api/plugins/scan-paths", {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path }),
     })
     const json = await res.json()
@@ -25,7 +25,7 @@ export function useScanPaths() {
   }
 
   const update = async (id: string, data: { path?: string; enabled?: boolean }) => {
-    const res = await fetch("/api/scan-paths/" + id, {
+    const res = await fetch("/api/plugins/scan-paths/" + id, {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data),
     })
     const json = await res.json()
@@ -34,7 +34,7 @@ export function useScanPaths() {
   }
 
   const remove = async (id: string) => {
-    await fetch("/api/scan-paths/" + id, { method: 'DELETE' })
+    await fetch("/api/plugins/scan-paths/" + id, { method: 'DELETE' })
     fetchPaths()
   }
 

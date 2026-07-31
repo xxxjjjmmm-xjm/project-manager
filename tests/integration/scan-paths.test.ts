@@ -5,7 +5,7 @@ const BASE = 'http://localhost:3000'
 
 describe('Scan Paths API', () => {
   it('GET returns scan paths list', async () => {
-    const res = await fetch(BASE + '/api/scan-paths')
+    const res = await fetch(BASE + '/api/plugins/scan-paths')
     const json = await res.json()
     expect(json.success).toBe(true)
     expect(Array.isArray(json.data)).toBe(true)
@@ -13,7 +13,7 @@ describe('Scan Paths API', () => {
 
   it('POST creates a new scan path and DELETE removes it', async () => {
     // Create
-    const createRes = await fetch(BASE + '/api/scan-paths', {
+    const createRes = await fetch(BASE + '/api/plugins/scan-paths', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ path: 'd:/vitest-test-' + Date.now() }),
@@ -23,12 +23,12 @@ describe('Scan Paths API', () => {
     expect(createJson.data.id).toBeTruthy()
 
     // Delete
-    const delRes = await fetch(BASE + '/api/scan-paths/' + createJson.data.id, { method: 'DELETE' })
+    const delRes = await fetch(BASE + '/api/plugins/scan-paths/' + createJson.data.id, { method: 'DELETE' })
     expect((await delRes.json()).success).toBe(true)
   })
 
   it('POST rejects empty path with validation error', async () => {
-    const res = await fetch(BASE + '/api/scan-paths', {
+    const res = await fetch(BASE + '/api/plugins/scan-paths', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ path: '' }),
@@ -39,13 +39,13 @@ describe('Scan Paths API', () => {
   })
 
   it('PATCH toggles enabled flag', async () => {
-    const createRes = await fetch(BASE + '/api/scan-paths', {
+    const createRes = await fetch(BASE + '/api/plugins/scan-paths', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ path: 'd:/patch-test-' + Date.now() }),
     })
     const { data } = await createRes.json()
 
-    const res = await fetch(BASE + '/api/scan-paths/' + data.id, {
+    const res = await fetch(BASE + '/api/plugins/scan-paths/' + data.id, {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ enabled: false }),
     })
@@ -54,6 +54,6 @@ describe('Scan Paths API', () => {
     expect(json.data.enabled).toBe(false)
 
     // Clean up
-    await fetch(BASE + '/api/scan-paths/' + data.id, { method: 'DELETE' })
+    await fetch(BASE + '/api/plugins/scan-paths/' + data.id, { method: 'DELETE' })
   })
 })

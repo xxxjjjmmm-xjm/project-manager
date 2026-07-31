@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import fs from 'fs'
 import path from 'path'
 import os from 'os'
-import { readFileWithLimit, findReadme, findClaudeMd, readPackageJson } from '@/lib/scanner/file-reader'
+import { readFileWithLimit, findReadme, findClaudeMd, readPackageJson } from '@/lib/plugins/scanner/file-reader'
 
 describe('file-reader', () => {
   let tmpDir: string
