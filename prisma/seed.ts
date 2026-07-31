@@ -1,8 +1,10 @@
 import { PrismaClient } from '@prisma/client'
+import { hashPassword } from '../lib/auth/password'
 
 const prisma = new PrismaClient()
 
 async function main() {
+  const passwordHash = await hashPassword('demo1234')
   // Delete existing data in reverse dependency order
   await prisma.taskTag.deleteMany()
   await prisma.projectTag.deleteMany()
@@ -27,7 +29,7 @@ async function main() {
       id: 'default-user',
       name: 'Demo User',
       email: 'demo@projecthub.dev',
-      passwordHash: '$2b$10$placeholder_hash_for_demo123',
+      passwordHash,
     },
   })
   console.log(`  User: ${user.name} (${user.email})`)
