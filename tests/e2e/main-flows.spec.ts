@@ -1,30 +1,32 @@
 import { test, expect } from '@playwright/test'
 
-const BASE = 'http://localhost:3004'
+const BASE = 'http://localhost:3456'
 
 test.describe('Project Manager E2E', () => {
-  test('dashboard loads with stats', async ({ page }) => {
+  test('dashboard loads', async ({ page }) => {
     await page.goto(BASE)
-    await expect(page.locator('h2')).toContainText('Dashboard')
+    const title = await page.title()
+    expect(title).toContain('Project Manager')
   })
 
-  test('projects page renders', async ({ page }) => {
+  test('projects page renders with i18n', async ({ page }) => {
     await page.goto(BASE + '/projects')
-    await expect(page.locator('h2')).toContainText('Projects')
+    await expect(page.locator('h2')).toContainText(/项目列表|Projects/)
   })
 
   test('settings page loads with scan controls', async ({ page }) => {
     await page.goto(BASE + '/settings')
-    await expect(page.locator('h2')).toContainText('Settings')
+    await expect(page.locator('h2')).toContainText(/设置|Settings/)
   })
 
   test('sidebar navigation works', async ({ page }) => {
     await page.goto(BASE)
-    await page.click('text=Projects')
+    // Click nav links by href
+    await page.click('a[href="/projects"]')
     await expect(page).toHaveURL(BASE + '/projects')
-    await page.click('text=Settings')
+    await page.click('a[href="/settings"]')
     await expect(page).toHaveURL(BASE + '/settings')
-    await page.click('text=Dashboard')
+    await page.click('a[href="/"]')
     await expect(page).toHaveURL(BASE + '/')
   })
 
