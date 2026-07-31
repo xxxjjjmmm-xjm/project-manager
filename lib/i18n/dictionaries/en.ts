@@ -63,6 +63,20 @@ export const en = {
     hardDeleteConfirm: 'This will permanently delete the project and all its data. This cannot be undone. Continue?',
     deleteFailed: 'Action failed', taskDragHint: 'Drag tasks here',
   },
+  tasksPage: {
+    title: 'Tasks', status: 'Status', priority: 'Priority', project: 'Project',
+    all: 'All', allProjects: 'All Projects', myTasks: 'My Tasks',
+    newTask: 'New Task', create: 'Create',
+    titlePlaceholder: 'Task title', selectProject: 'Select a project', dueDate: 'Due Date',
+    noTasks: 'No tasks yet', noProjects: 'No projects yet',
+    createFailed: 'Failed to create task', loadFailed: 'Failed to load tasks',
+  },
+  calendarPage: {
+    title: 'Calendar', today: 'Today',
+    dayEvents: 'Day Events', noEvents: 'No events for this day',
+    task: 'Task', project: 'Project',
+    loadFailed: 'Failed to load calendar',
+  },
   settings: {
     title: 'Settings', scanPaths: 'Scan Paths', addPath: 'Add Path',
     pathPlaceholder: 'e.g. d:/projects', noPaths: 'No scan paths configured',
