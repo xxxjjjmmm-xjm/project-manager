@@ -24,7 +24,7 @@ interface UpdateTaskInput {
 }
 
 interface ListTasksParams {
-  projectId: string
+  projectId?: string
   status?: string
   priority?: string
   assigneeId?: string
@@ -43,7 +43,8 @@ export async function listTasks(params: ListTasksParams) {
     page = 1,
     limit = 50,
   } = params
-  const where: Prisma.TaskWhereInput = { projectId }
+  const where: Prisma.TaskWhereInput = {}
+  if (projectId) where.projectId = projectId
 
   if (status) where.status = status
   if (priority) where.priority = priority
