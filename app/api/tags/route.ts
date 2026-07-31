@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   const withCount = searchParams.get('withCount') === 'true'
   const tags = await prisma.tag.findMany({
     orderBy: { name: 'asc' },
-    include: withCount ? { projects: true } : undefined,
+    include: { projects: true },
   })
   const mapped = tags.map((t) => ({
     id: t.id, name: t.name, color: t.color,

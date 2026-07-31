@@ -13,13 +13,14 @@ export function TagManager({ projectId, currentTags, allTags, onTagAdded, onTagR
 
   const addTag = async () => {
     if (!newTag.trim()) return
-    let tag = allTags.find((t) => t.name.toLowerCase() === newTag.toLowerCase())
+    let tag: { id: string } | undefined = allTags.find((t) => t.name.toLowerCase() === newTag.toLowerCase())
     if (!tag) {
       const res = await fetch('/api/tags', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: newTag }) })
       const json = await res.json()
-      if (!json.success) return
+      if (!json.success || !json.data) return
       tag = json.data
     }
+    if (!tag) return
     await fetch('/api/projects/' + projectId + '/tags', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tagIds: [tag.id] }) })
     setNewTag('')
     onTagAdded()
