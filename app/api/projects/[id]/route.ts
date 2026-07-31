@@ -18,7 +18,8 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   try {
     const body = await request.json()
     const parsed = updateProjectSchema.parse(body)
-    const project = await updateProject(params.id, parsed)
+    const actorId = request.headers.get('x-user-id') ?? 'default-user'
+    const project = await updateProject(params.id, parsed, actorId)
     return successResponse(project)
   } catch (err) {
     const { code, message, action, status } = handleError(err)
@@ -26,9 +27,10 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   }
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const result = await archiveProject(params.id)
+    const actorId = request.headers.get('x-user-id') ?? 'default-user'
+    const result = await archiveProject(params.id, actorId)
     return successResponse({ archived: true, id: result.id })
   } catch (err) {
     const { code, message, action, status } = handleError(err)

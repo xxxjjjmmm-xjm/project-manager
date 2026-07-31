@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/db'
 import { AppError } from '@/lib/errors/AppError'
+import { canInviteMembers } from '@/lib/permissions'
 
 interface InviteMemberInput {
   email: string
@@ -39,8 +40,13 @@ export async function listTeamMembers(workspaceId: string) {
 
 export async function inviteMember(
   workspaceId: string,
+  actorId: string,
   input: InviteMemberInput
 ) {
+  if (!(await canInviteMembers(workspaceId, actorId))) {
+    throw new AppError('FORBIDDEN', 'Only admins can invite members', 'report', 403)
+  }
+
   // Verify workspace exists
   const workspace = await prisma.workspace.findUnique({
     where: { id: workspaceId },

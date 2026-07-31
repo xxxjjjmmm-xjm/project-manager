@@ -26,11 +26,11 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const parsed = inviteMemberSchema.parse(body)
-    const member = await inviteMember('default-workspace', parsed)
-    // NOTE: workspaceId/actorId come from hardcoded defaults for now (auth comes in Phase 8)
+    const actorId = request.headers.get('x-user-id') ?? 'default-user'
+    const member = await inviteMember('default-workspace', actorId, parsed)
     await createActivity({
       workspaceId: 'default-workspace',
-      actorId: 'default-user',
+      actorId,
       action: 'INVITE_MEMBER',
       targetType: 'user',
       targetId: member.userId,
