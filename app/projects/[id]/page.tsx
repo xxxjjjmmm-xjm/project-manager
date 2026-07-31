@@ -1,60 +1,169 @@
 'use client'
-import { useState, useEffect } from 'react'
+
+import { useState } from 'react'
+import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import { ProjectDetailHeader } from '@/components/projects/ProjectDetailHeader'
-import { ProjectDetailOverview } from '@/components/projects/ProjectDetailOverview'
-import { ProjectDetailTimeline } from '@/components/projects/ProjectDetailTimeline'
-import { ProjectDetailClaude } from '@/components/projects/ProjectDetailClaude'
-import { ProjectForm } from '@/components/projects/ProjectForm'
-import { TagManager } from '@/components/projects/TagManager'
-import { Loading } from '@/components/shared/Loading'
-import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ArrowLeft, Pencil } from 'lucide-react'
+import { StatusBadge } from '@/components/shared/StatusBadge'
+import { ProgressBar } from '@/components/shared/ProgressBar'
+import { Button } from '@/components/ui/button'
+import { ProjectOverviewTab } from '@/components/projects/ProjectOverviewTab'
+import { KanbanBoard } from '@/components/projects/KanbanBoard'
+import { ProjectFilesTab } from '@/components/projects/ProjectFilesTab'
+import { ProjectActivityTab } from '@/components/projects/ProjectActivityTab'
+import { ProjectSettings } from '@/components/projects/ProjectSettings'
+import { ProjectEditForm } from '@/components/projects/ProjectEditForm'
 import { useProject } from '@/hooks/useProject'
-import { useTags } from '@/hooks/useTags'
+import { useTasks } from '@/hooks/useTasks'
 import { useI18n } from '@/lib/i18n/context'
-import type { GitCommitItem } from '@/lib/types'
+import { cn } from '@/lib/utils'
+
+const TABS = [
+  { key: 'overview', labelKey: 'overview' },
+  { key: 'kanban', labelKey: 'kanban' },
+  { key: 'files', labelKey: 'files' },
+  { key: 'activity', labelKey: 'activity' },
+  { key: 'settings', labelKey: 'settings' },
+] as const
+
+type TabKey = (typeof TABS)[number]['key']
 
 export default function ProjectDetailPage() {
   const { t } = useI18n()
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const { project, isLoading, update, archive, purge, refetch } = useProject(id)
-  const { tags } = useTags()
-  const [formOpen, setFormOpen] = useState(false)
-  const [readme, setReadme] = useState<string | null>(null)
-  const [commits, setCommits] = useState<GitCommitItem[]>([])
+  const { tasks, moveTask } = useTasks(id)
+  const [activeTab, setActiveTab] = useState<TabKey>('overview')
+  const [editing, setEditing] = useState(false)
 
-  useEffect(() => {
-    if (!project?.id) return
-    fetch('/api/projects/' + project.id + '/readme').then((r) => r.json()).then((j) => { if (j.success) setReadme(j.data.content) })
-    fetch('/api/projects/' + project.id + '/git-commits').then((r) => r.json()).then((j) => { if (j.success) setCommits(j.data) })
-  }, [project?.id])
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-4">
+          <div className="h-6 w-32 animate-pulse rounded bg-white/[0.06]" />
+          <div className="h-6 w-24 animate-pulse rounded bg-white/[0.06]" />
+        </div>
+        <div className="h-8 w-1/2 animate-pulse rounded-lg bg-white/[0.06]" />
+        <div className="h-48 animate-pulse rounded-2xl border border-white/[0.06] bg-white/[0.04]" />
+      </div>
+    )
+  }
 
-  if (isLoading) return <Loading rows={8} />
-  if (!project) return <div className="text-red-500 p-6">{t.detail.notFound}</div>
+  if (!project) {
+    return (
+      <div className="py-16 text-center">
+        <p className="text-red-400">{t.detail.notFound}</p>
+        <Link href="/projects" className="mt-3 inline-block text-sm text-blue-400 hover:underline">
+          {t.projects.title}
+        </Link>
+      </div>
+    )
+  }
+
+  const handleArchive = async (): Promise<boolean> => {
+    try {
+      await archive()
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  const handlePurge = async (): Promise<boolean> => {
+    try {
+      await purge()
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  const handleMoveTask = async (taskId: string, status: string) => {
+    try {
+      await moveTask(taskId, status)
+      await refetch()
+    } catch {
+      // optimistic update already rolled back inside the hook
+    }
+  }
 
   return (
-    <ErrorBoundary>
-      <ProjectDetailHeader project={project} t={t}
-        onArchive={async () => { await archive(); refetch() }}
-        onPurge={async () => { await purge(); router.push('/projects') }}
-      />
-      <div className="flex gap-6">
-        <div className="flex-1">
-          <Tabs defaultValue="overview">
-            <TabsList><TabsTrigger value="overview">{t.detail.overview}</TabsTrigger><TabsTrigger value="activity">{t.detail.activity}</TabsTrigger><TabsTrigger value="claude">{t.detail.claudeMd}</TabsTrigger></TabsList>
-            <TabsContent value="overview" className="mt-4"><ProjectDetailOverview project={project} readme={readme} t={t} /></TabsContent>
-            <TabsContent value="activity" className="mt-4"><ProjectDetailTimeline commits={commits} scanRecords={project.scanRecords} t={t} /></TabsContent>
-            <TabsContent value="claude" className="mt-4"><ProjectDetailClaude projectId={project.id} t={t} /></TabsContent>
-          </Tabs>
+    <div className="space-y-6">
+      <div>
+        <Link
+          href="/projects"
+          className="mb-3 inline-flex items-center gap-1.5 text-sm text-zinc-400 transition-colors hover:text-white"
+        >
+          <ArrowLeft className="h-4 w-4" /> {t.projects.title}
+        </Link>
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <h1 className="flex items-center gap-2 text-2xl font-bold text-white">
+              <span className="truncate">{project.name}</span>
+              <StatusBadge status={project.status} size="sm" />
+              {project.isArchived && <span className="text-xs text-zinc-500">{t.projects.archived}</span>}
+            </h1>
+            <div className="mt-2 max-w-md">
+              <ProgressBar progress={project.progress} showLabel />
+            </div>
+          </div>
+          <Button variant="outline" size="sm" onClick={() => setEditing((v) => !v)}>
+            <Pencil className="h-4 w-4" /> {t.projectPage.edit}
+          </Button>
         </div>
-        <aside className="w-48 shrink-0">
-          <TagManager projectId={project.id} currentTags={project.tags} allTags={tags} onTagAdded={refetch} onTagRemoved={refetch} t={t} />
-          <button onClick={() => setFormOpen(true)} className="text-sm text-blue-600 hover:underline mt-4 block">{t.detail.editDetails}</button>
-        </aside>
       </div>
-      <ProjectForm project={project} open={formOpen} onOpenChange={setFormOpen} onSave={async (data) => { await update(data); refetch() }} t={t} />
-    </ErrorBoundary>
+
+      {editing && (
+        <ProjectEditForm
+          project={project}
+          t={t}
+          onSave={async (body) => {
+            await update(body)
+            await refetch()
+            return true
+          }}
+          onCancel={() => setEditing(false)}
+        />
+      )}
+
+      <div className="flex gap-1 border-b border-white/[0.06]">
+        {TABS.map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            onClick={() => setActiveTab(tab.key)}
+            className={cn(
+              '-mb-px border-b-2 px-4 py-2 text-sm font-medium transition-colors',
+              activeTab === tab.key
+                ? 'border-[#3B82F6] text-white'
+                : 'border-transparent text-zinc-500 hover:text-zinc-300'
+            )}
+          >
+            {t.projectPage[tab.labelKey]}
+          </button>
+        ))}
+      </div>
+
+      <div>
+        {activeTab === 'overview' && <ProjectOverviewTab project={project} t={t} />}
+        {activeTab === 'kanban' && <KanbanBoard tasks={tasks} onMoveTask={handleMoveTask} t={t} />}
+        {activeTab === 'files' && <ProjectFilesTab projectId={id} t={t} />}
+        {activeTab === 'activity' && <ProjectActivityTab projectId={id} t={t} />}
+        {activeTab === 'settings' && (
+          <ProjectSettings
+            project={project}
+            t={t}
+            onChanged={refetch}
+            onArchive={handleArchive}
+            onPurge={handlePurge}
+            onArchived={() => {
+              void refetch()
+            }}
+            onPurged={() => router.push('/projects')}
+          />
+        )}
+      </div>
+    </div>
   )
 }

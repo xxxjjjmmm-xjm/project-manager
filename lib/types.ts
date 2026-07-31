@@ -193,3 +193,104 @@ export interface ActivityItem {
   createdAt: string
   actor: { id: string; name: string; avatarUrl: string } | null
 }
+
+// ─── Phase 5: Projects split view + detail (Kanban) ───
+
+export interface ProjectOwner {
+  id: string
+  name: string
+  avatarUrl: string
+}
+
+export interface ProjectTagRef {
+  id: string
+  name: string
+  color: string
+}
+
+export interface ProjectTagLink {
+  id: string
+  projectId: string
+  tagId: string
+  createdAt: string
+  tag: ProjectTagRef
+}
+
+export interface ProjectMemberRef {
+  id: string
+  role: string
+  user: ProjectOwner
+}
+
+export interface TaskAssigneeRef {
+  id: string
+  name: string
+  avatarUrl: string
+}
+
+export interface TaskItem {
+  id: string
+  projectId: string
+  title: string
+  description: string
+  status: string
+  priority: string
+  assigneeId: string | null
+  creatorId: string
+  position: number
+  dueDate: string | null
+  createdAt: string
+  updatedAt: string
+  assignee: TaskAssigneeRef | null
+  creator: TaskAssigneeRef | null
+}
+
+export interface FileItem {
+  id: string
+  projectId: string | null
+  taskId: string | null
+  filename: string
+  mimeType: string
+  sizeBytes: number
+  status: string
+  createdAt: string
+  uploader: TaskAssigneeRef | null
+}
+
+/** List item returned by GET /api/projects (members are optional — the list endpoint does not include them). */
+export interface ProjectSummary {
+  id: string
+  name: string
+  description: string
+  type: string
+  status: string
+  priority: string
+  progress: number
+  startDate: string | null
+  dueDate: string | null
+  path: string
+  isArchived: boolean
+  owner: ProjectOwner | null
+  tags: ProjectTagLink[]
+  members?: ProjectMemberRef[]
+}
+
+/** Full project returned by GET /api/projects/[id]. */
+export interface ProjectDetailData extends ProjectSummary {
+  workspaceId: string
+  ownerId: string
+  techStack: string
+  totalCommits: number
+  lastScannedAt: string | null
+  lastCommitAt: string | null
+  lastCommitHash: string
+  firstSeenAt: string
+  remoteUrl: string
+  archivedAt: string | null
+  metadata: string
+  createdAt: string
+  updatedAt: string
+  members: ProjectMemberRef[]
+  tasks: TaskItem[]
+  assets: FileItem[]
+}
