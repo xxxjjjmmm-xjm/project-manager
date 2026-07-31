@@ -12,9 +12,11 @@ import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useProject } from '@/hooks/useProject'
 import { useTags } from '@/hooks/useTags'
+import { useI18n } from '@/lib/i18n/context'
 import type { GitCommitItem } from '@/lib/types'
 
 export default function ProjectDetailPage() {
+  const { t } = useI18n()
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const { project, isLoading, update, archive, purge, refetch } = useProject(id)
@@ -30,29 +32,29 @@ export default function ProjectDetailPage() {
   }, [project?.id])
 
   if (isLoading) return <Loading rows={8} />
-  if (!project) return <div className="text-red-500 p-6">Project not found</div>
+  if (!project) return <div className="text-red-500 p-6">{t.detail.notFound}</div>
 
   return (
     <ErrorBoundary>
-      <ProjectDetailHeader project={project}
+      <ProjectDetailHeader project={project} t={t}
         onArchive={async () => { await archive(); refetch() }}
         onPurge={async () => { await purge(); router.push('/projects') }}
       />
       <div className="flex gap-6">
         <div className="flex-1">
           <Tabs defaultValue="overview">
-            <TabsList><TabsTrigger value="overview">Overview</TabsTrigger><TabsTrigger value="activity">Activity</TabsTrigger><TabsTrigger value="claude">CLAUDE.md</TabsTrigger></TabsList>
-            <TabsContent value="overview" className="mt-4"><ProjectDetailOverview project={project} readme={readme} /></TabsContent>
-            <TabsContent value="activity" className="mt-4"><ProjectDetailTimeline commits={commits} scanRecords={project.scanRecords} /></TabsContent>
-            <TabsContent value="claude" className="mt-4"><ProjectDetailClaude projectId={project.id} /></TabsContent>
+            <TabsList><TabsTrigger value="overview">{t.detail.overview}</TabsTrigger><TabsTrigger value="activity">{t.detail.activity}</TabsTrigger><TabsTrigger value="claude">{t.detail.claudeMd}</TabsTrigger></TabsList>
+            <TabsContent value="overview" className="mt-4"><ProjectDetailOverview project={project} readme={readme} t={t} /></TabsContent>
+            <TabsContent value="activity" className="mt-4"><ProjectDetailTimeline commits={commits} scanRecords={project.scanRecords} t={t} /></TabsContent>
+            <TabsContent value="claude" className="mt-4"><ProjectDetailClaude projectId={project.id} t={t} /></TabsContent>
           </Tabs>
         </div>
         <aside className="w-48 shrink-0">
-          <TagManager projectId={project.id} currentTags={project.tags} allTags={tags} onTagAdded={refetch} onTagRemoved={refetch} />
-          <button onClick={() => setFormOpen(true)} className="text-sm text-blue-600 hover:underline mt-4 block">Edit details</button>
+          <TagManager projectId={project.id} currentTags={project.tags} allTags={tags} onTagAdded={refetch} onTagRemoved={refetch} t={t} />
+          <button onClick={() => setFormOpen(true)} className="text-sm text-blue-600 hover:underline mt-4 block">{t.detail.editDetails}</button>
         </aside>
       </div>
-      <ProjectForm project={project} open={formOpen} onOpenChange={setFormOpen} onSave={async (data) => { await update(data); refetch() }} />
+      <ProjectForm project={project} open={formOpen} onOpenChange={setFormOpen} onSave={async (data) => { await update(data); refetch() }} t={t} />
     </ErrorBoundary>
   )
 }

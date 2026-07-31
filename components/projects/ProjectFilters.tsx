@@ -2,26 +2,25 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import type { TagItem } from '@/lib/types'
-
-interface Props {
-  search: string; onSearchChange: (v: string) => void
-  typeFilter: string; onTypeChange: (v: string) => void
-  showArchived: boolean; onArchivedToggle: () => void
-  tags: TagItem[]
-}
+import type { en } from '@/lib/i18n/dictionaries/en'
 
 const TYPES = ['all', 'web', 'cli', 'library', 'mobile', 'desktop', 'script', 'other']
 
-export function ProjectFilters(p: Props) {
+export function ProjectFilters(p: {
+  t: typeof en; search: string; onSearchChange: (v: string) => void
+  typeFilter: string; onTypeChange: (v: string) => void
+  showArchived: boolean; onArchivedToggle: () => void; tags: TagItem[]
+}) {
+  const tp = p.t.projects
   return (
     <div className="space-y-3 mb-4">
       <div className="flex gap-3">
-        <Input placeholder="Search projects..." value={p.search} onChange={(e) => p.onSearchChange(e.target.value)} className="max-w-sm" />
+        <Input placeholder={tp.search} value={p.search} onChange={(e) => p.onSearchChange(e.target.value)} className="max-w-sm" />
         <select value={p.typeFilter} onChange={(e) => p.onTypeChange(e.target.value)} className="border rounded-md px-3 py-2 text-sm bg-background">
-          {TYPES.map((t) => <option key={t} value={t}>{t === 'all' ? 'All Types' : t}</option>)}
+          {TYPES.map((t) => <option key={t} value={t}>{t === 'all' ? tp.allTypes : t}</option>)}
         </select>
         <Button variant={p.showArchived ? 'secondary' : 'outline'} size="sm" onClick={p.onArchivedToggle}>
-          {p.showArchived ? 'Hide Archived' : 'Show Archived'}
+          {p.showArchived ? tp.hideArchived : tp.showArchived}
         </Button>
       </div>
     </div>
