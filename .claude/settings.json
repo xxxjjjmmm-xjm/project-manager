@@ -1,0 +1,37 @@
+{
+  "env": {
+    "ECC_DISABLED_HOOKS": "pre:edit-write:gateguard-fact-force,pre:bash:gateguard-fact-force"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@14 . --typescript --tailwind --eslint --app --src-dir=false --import-alias=\"@/*\" --no-turbopack)",
+      "Bash(cd \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager\" && mkdir -p /tmp/feat-pm-backup && mv docs /tmp/feat-pm-backup/ && mv .claude /tmp/feat-pm-backup/ && echo \"Moved conflicting dirs to /tmp/feat-pm-backup/\")",
+      "Bash(npx create-next-app@14 . --typescript --tailwind --eslint --app --no-src-dir --import-alias=\"@/*\" --use-npm)",
+      "Bash(rm -rf /tmp/feat-pm-temp)",
+      "Bash(npx create-next-app@14 feat-pm-temp --typescript --tailwind --eslint --app --no-src-dir --import-alias=\"@/*\" --use-npm)",
+      "Bash(cat)",
+      "Bash(cp -r /tmp/feat-pm-backup/docs .)",
+      "Bash(tasklist)",
+      "Bash(npm config *)",
+      "Bash(npm ping *)",
+      "Bash(npm -v)",
+      "Bash(curl -sI https://registry.npmjs.org/)",
+      "Bash(pnpm --version)",
+      "Bash(yarn --version)",
+      "Bash(echo \"---exit:$?---\")",
+      "Bash(mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/app/api/scan-paths/[id]\")",
+      "Bash(mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/app/api/projects/[id]/purge\")",
+      "Bash(mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/app/api/projects/[id]/git-commits\")",
+      "Bash(mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/app/api/projects/[id]/readme\")",
+      "Bash(mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/app/api/projects/[id]/claude-md\")",
+      "Bash(mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/components/layout\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/components/dashboard\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/components/projects\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/components/settings\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/components/shared\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/hooks\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/app/projects/[id]\" && mkdir -p \"d:/项目管理/项目管理系统/.claude/worktrees/feat-project-manager/app/settings\" && echo \"directories created\")",
+      "Bash(ECC_GATEGUARD=off bash -c ' *)",
+      "Skill(update-config)",
+      "Skill(update-config:*)"
+    ],
+    "additionalDirectories": [
+      "d:\\项目管理\\项目管理系统\\.claude\\worktrees\\feat-project-manager\\.claude",
+      "d:\\项目管理\\项目管理系统\\.claude\\worktrees\\feat-project-manager\\app\\projects\\[id]"
+    ]
+  }
+}
