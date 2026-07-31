@@ -1,6 +1,6 @@
 export const zh = {
-  app: { title: '项目管理器', subtitle: '本地开发追踪器' },
-  nav: { dashboard: '仪表盘', projects: '项目列表', settings: '设置' },
+  app: { title: '项目管理器', subtitle: '本地开发追踪器', brand: 'Project Hub' },
+  nav: { dashboard: '首页控制台', projects: '项目中心', tasks: '我的任务', calendar: '日历', team: '团队成员', files: '文件管理', search: '搜索', settings: '设置' },
   dashboard: {
     title: '仪表盘', totalProjects: '项目总数',
     web: '前端', cli: '命令行', libraries: '类库',
@@ -36,6 +36,12 @@ export const zh = {
     lastScan: '上次扫描:', never: '从未',
   },
   topNav: { lastScan: '上次扫描:' },
+  topBar: { search: '搜索' },
+  status: {
+    planning: '规划中', inProgress: '进行中', review: '评审中',
+    completed: '已完成', delayed: '已延期', atRisk: '有风险',
+    todo: '待办', done: '已完成',
+  },
   sidebar: {
     language: '语言', theme: '主题', light: '浅色', dark: '深色',
     system: '跟随系统', version: 'v1.0.0', github: 'GitHub',

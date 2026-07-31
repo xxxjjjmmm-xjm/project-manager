@@ -1,6 +1,6 @@
 export const en = {
-  app: { title: 'Project Manager', subtitle: 'Local Dev Tracker' },
-  nav: { dashboard: 'Dashboard', projects: 'Projects', settings: 'Settings' },
+  app: { title: 'Project Manager', subtitle: 'Local Dev Tracker', brand: 'Project Hub' },
+  nav: { dashboard: 'Dashboard', projects: 'Projects', tasks: 'Tasks', calendar: 'Calendar', team: 'Team', files: 'Files', search: 'Search', settings: 'Settings' },
   dashboard: {
     title: 'Dashboard', totalProjects: 'Total Projects',
     web: 'Web', cli: 'CLI', libraries: 'Libraries',
@@ -36,6 +36,12 @@ export const en = {
     lastScan: 'Last:', never: 'Never',
   },
   topNav: { lastScan: 'Last scan:' },
+  topBar: { search: 'Search' },
+  status: {
+    planning: 'Planning', inProgress: 'In Progress', review: 'In Review',
+    completed: 'Completed', delayed: 'Delayed', atRisk: 'At Risk',
+    todo: 'Todo', done: 'Done',
+  },
   sidebar: {
     language: 'Language', theme: 'Theme', light: 'Light', dark: 'Dark',
     system: 'System', version: 'v1.0.0', github: 'GitHub',
