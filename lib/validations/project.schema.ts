@@ -4,8 +4,9 @@ const PROJECT_STATUSES = ['PLANNING', 'IN_PROGRESS', 'REVIEW', 'COMPLETED', 'DEL
 const PRIORITIES = ['URGENT', 'HIGH', 'MEDIUM', 'LOW'] as const
 
 export const createProjectSchema = z.object({
-  workspaceId: z.string().min(1),
-  ownerId: z.string().min(1),
+  // Auth lands in Phase 8 — server defaults until then
+  workspaceId: z.string().min(1).optional().default('default-workspace'),
+  ownerId: z.string().min(1).optional().default('default-user'),
   name: z.string().min(1, 'Name is required').max(200),
   description: z.string().max(2000).optional(),
   status: z.enum(PROJECT_STATUSES).optional(),
