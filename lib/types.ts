@@ -255,6 +255,14 @@ export interface FileItem {
   status: string
   createdAt: string
   uploader: TaskAssigneeRef | null
+  /** Present on the full Asset row returned by the files API. */
+  storageProvider?: string
+  storageKey?: string
+  filePath?: string
+  uploadedById?: string
+  updatedAt?: string
+  project?: { id: string; name: string } | null
+  task?: { id: string; title: string } | null
 }
 
 /** List item returned by GET /api/projects (members are optional — the list endpoint does not include them). */
@@ -293,4 +301,47 @@ export interface ProjectDetailData extends ProjectSummary {
   members: ProjectMemberRef[]
   tasks: TaskItem[]
   assets: FileItem[]
+}
+
+// ─── Phase 7: Team, Files & Search ───
+
+export type TeamRole = 'OWNER' | 'ADMIN' | 'MEMBER' | 'VIEWER'
+
+export interface TeamMember {
+  id: string
+  userId: string
+  name: string
+  email: string
+  avatarUrl: string | null
+  role: string
+  openTasks: number
+}
+
+export interface SearchProjectResult {
+  id: string
+  name: string
+  status: string
+  dueDate: string | null
+}
+
+export interface SearchTaskResult {
+  id: string
+  projectId: string
+  title: string
+  status: string
+  dueDate: string | null
+}
+
+export interface SearchFileResult {
+  id: string
+  filename: string
+  mimeType: string
+  sizeBytes: number
+  createdAt: string
+}
+
+export interface SearchResults {
+  projects: SearchProjectResult[]
+  tasks: SearchTaskResult[]
+  files: SearchFileResult[]
 }
