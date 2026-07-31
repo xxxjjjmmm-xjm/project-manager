@@ -63,6 +63,20 @@ export const zh = {
     hardDeleteConfirm: '此操作将永久删除项目及其所有数据，无法撤销。确定继续吗？',
     deleteFailed: '操作失败', taskDragHint: '拖拽任务到这里',
   },
+  tasksPage: {
+    title: '我的任务', status: '状态', priority: '优先级', project: '项目',
+    all: '全部', allProjects: '全部项目', myTasks: '我的任务',
+    newTask: '新建任务', create: '创建',
+    titlePlaceholder: '任务标题', selectProject: '选择项目', dueDate: '截止日期',
+    noTasks: '暂无任务', noProjects: '暂无项目',
+    createFailed: '创建任务失败', loadFailed: '加载任务失败',
+  },
+  calendarPage: {
+    title: '日历', today: '今天',
+    dayEvents: '当日任务', noEvents: '当天暂无安排',
+    task: '任务', project: '项目',
+    loadFailed: '加载日历失败',
+  },
   settings: {
     title: '设置', scanPaths: '扫描路径', addPath: '添加路径',
     pathPlaceholder: '例如 d:/projects', noPaths: '未配置扫描路径',
