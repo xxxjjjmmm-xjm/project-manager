@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/db'
 import { AppError } from '@/lib/errors/AppError'
+import { canDeleteAsset } from '@/lib/permissions'
 
 interface ListFilesParams {
   workspaceId: string
@@ -60,10 +61,26 @@ export async function getFile(id: string) {
   return asset
 }
 
-export async function deleteFile(id: string) {
+export async function deleteFile(id: string, actorId?: string) {
   const existing = await prisma.asset.findUnique({ where: { id } })
   if (!existing) {
     throw new AppError('NOT_FOUND', 'File not found', 'abort', 404)
+  }
+
+  if (actorId) {
+    const allowed = await canDeleteAsset(
+      existing.workspaceId,
+      actorId,
+      existing.uploadedById
+    )
+    if (!allowed) {
+      throw new AppError(
+        'FORBIDDEN',
+        'Only admins or the uploader can delete this file',
+        'report',
+        403
+      )
+    }
   }
 
   return prisma.asset.delete({ where: { id } })

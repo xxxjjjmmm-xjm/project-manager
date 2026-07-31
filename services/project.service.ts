@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/db'
 import { AppError } from '@/lib/errors/AppError'
+import { canEditProject } from '@/lib/permissions'
 import type { Prisma } from '@prisma/client'
 
 interface CreateProjectInput {
@@ -106,10 +107,14 @@ export async function createProject(input: CreateProjectInput) {
   })
 }
 
-export async function updateProject(id: string, input: UpdateProjectInput) {
+export async function updateProject(id: string, input: UpdateProjectInput, actorId?: string) {
   const existing = await prisma.project.findUnique({ where: { id } })
   if (!existing) {
     throw new AppError('NOT_FOUND', 'Project not found', 'abort', 404)
+  }
+
+  if (actorId && !(await canEditProject(existing.workspaceId, actorId))) {
+    throw new AppError('FORBIDDEN', 'You do not have permission to edit this project', 'report', 403)
   }
 
   const data: Prisma.ProjectUpdateInput = {}
@@ -129,10 +134,14 @@ export async function updateProject(id: string, input: UpdateProjectInput) {
   })
 }
 
-export async function archiveProject(id: string) {
+export async function archiveProject(id: string, actorId?: string) {
   const existing = await prisma.project.findUnique({ where: { id } })
   if (!existing) {
     throw new AppError('NOT_FOUND', 'Project not found', 'abort', 404)
+  }
+
+  if (actorId && !(await canEditProject(existing.workspaceId, actorId))) {
+    throw new AppError('FORBIDDEN', 'You do not have permission to archive this project', 'report', 403)
   }
 
   return prisma.project.update({
@@ -141,10 +150,14 @@ export async function archiveProject(id: string) {
   })
 }
 
-export async function deleteProject(id: string) {
+export async function deleteProject(id: string, actorId?: string) {
   const existing = await prisma.project.findUnique({ where: { id } })
   if (!existing) {
     throw new AppError('NOT_FOUND', 'Project not found', 'abort', 404)
+  }
+
+  if (actorId && !(await canEditProject(existing.workspaceId, actorId))) {
+    throw new AppError('FORBIDDEN', 'You do not have permission to delete this project', 'report', 403)
   }
 
   return prisma.project.delete({ where: { id } })

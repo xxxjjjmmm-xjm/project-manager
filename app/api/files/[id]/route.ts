@@ -20,11 +20,12 @@ export async function GET(
 }
 
 export async function DELETE(
-  _req: NextRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const file = await deleteFile(params.id)
+    const actorId = request.headers.get('x-user-id') ?? 'default-user'
+    const file = await deleteFile(params.id, actorId)
     // Remove the physical file if it still exists (missing file must not fail the API)
     if (file.storageKey) {
       const absolutePath = path.join(process.cwd(), 'storage', file.storageKey)
@@ -34,10 +35,9 @@ export async function DELETE(
         // physical file already gone — DB row deletion is what matters
       }
     }
-    // NOTE: workspaceId/actorId come from hardcoded defaults for now (auth comes in Phase 8)
     await createActivity({
       workspaceId: 'default-workspace',
-      actorId: 'default-user',
+      actorId,
       action: 'DELETE_FILE',
       targetType: 'file',
       targetId: file.id,
