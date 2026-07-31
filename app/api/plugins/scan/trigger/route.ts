@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server'
-import { Scanner } from '@/lib/scanner/index'
+import { Scanner } from '@/lib/plugins/scanner/index'
 import { successResponse, errorResponse } from '@/lib/api-response'
 
 export async function POST(request: NextRequest) {

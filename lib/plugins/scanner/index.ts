@@ -5,8 +5,6 @@ import { extractMetadata } from './extractor'
 import { getGitInfo } from './git-reader'
 import type { ScanEntryResult } from './types'
 
-const MAX_COMMITS_TO_KEEP = 50
-
 export class Scanner {
   async scanAll(): Promise<ScanEntryResult[]> {
     const scanPaths = await prisma.scanPath.findMany({ where: { enabled: true } })
@@ -72,19 +70,21 @@ export class Scanner {
     })
 
     if (git.recentCommits.length > 0) {
-      for (const commit of git.recentCommits) {
-        await prisma.gitCommit.upsert({
-          where: { projectId_hash: { projectId: project.id, hash: commit.hash } },
-          create: { projectId: project.id, hash: commit.hash, message: commit.message, author: commit.author, date: commit.date },
-          update: { message: commit.message, author: commit.author, date: commit.date },
-        })
-      }
-      const oldCommits = await prisma.gitCommit.findMany({
-        where: { projectId: project.id }, orderBy: { date: 'desc' }, skip: MAX_COMMITS_TO_KEEP,
+      // v2 does not persist git commit rows — log the scan result as an activity instead.
+      await prisma.activity.create({
+        data: {
+          workspaceId: project.workspaceId,
+          actorId: 'default-user',
+          action: 'SCAN_PROJECT',
+          targetType: 'project',
+          targetId: project.id,
+          metadata: JSON.stringify({
+            commitCount: git.recentCommits.length,
+            latestHash: git.recentCommits[0].hash,
+            totalCommits: git.totalCommits,
+          }),
+        },
       })
-      if (oldCommits.length > 0) {
-        await prisma.gitCommit.deleteMany({ where: { id: { in: oldCommits.map((c) => c.id) } } })
-      }
     }
 
     return { dirName: candidate.dirName, status: 'success', fileCount, extracted, git }

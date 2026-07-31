@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import fs from 'fs'
 import path from 'path'
 import os from 'os'
-import { extractMetadata } from '@/lib/scanner/extractor'
+import { extractMetadata } from '@/lib/plugins/scanner/extractor'
 
 describe('extractor', () => {
   let tmpDir: string

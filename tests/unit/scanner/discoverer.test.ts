@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import fs from 'fs'
 import path from 'path'
 import os from 'os'
-import { discoverProjects } from '@/lib/scanner/discoverer'
+import { discoverProjects } from '@/lib/plugins/scanner/discoverer'
 
 describe('discoverer', () => {
   let tmpDir: string
