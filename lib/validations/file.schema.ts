@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const fileQuerySchema = z.object({
+  search: z.string().optional(),
   projectId: z.string().optional(),
   taskId: z.string().optional(),
   status: z.enum(['UPLOADED', 'PROCESSING', 'AVAILABLE', 'ARCHIVED']).optional(),

@@ -3,15 +3,29 @@ import { AppError } from '@/lib/errors/AppError'
 
 interface ListFilesParams {
   workspaceId: string
+  search?: string
   projectId?: string
   taskId?: string
   page?: number
   limit?: number
 }
 
+interface CreateFileParams {
+  workspaceId: string
+  projectId?: string
+  taskId?: string
+  filename: string
+  filePath: string
+  storageKey: string
+  mimeType: string
+  sizeBytes: number
+  uploadedById?: string
+}
+
 export async function listFiles(params: ListFilesParams) {
-  const { workspaceId, projectId, taskId, page = 1, limit = 20 } = params
+  const { workspaceId, search, projectId, taskId, page = 1, limit = 20 } = params
   const where: Record<string, unknown> = { workspaceId }
+  if (search) where.filename = { contains: search }
   if (projectId) where.projectId = projectId
   if (taskId) where.taskId = taskId
 
@@ -53,4 +67,36 @@ export async function deleteFile(id: string) {
   }
 
   return prisma.asset.delete({ where: { id } })
+}
+
+export async function createFile(params: CreateFileParams) {
+  const {
+    workspaceId,
+    projectId,
+    taskId,
+    filename,
+    filePath,
+    storageKey,
+    mimeType,
+    sizeBytes,
+    uploadedById,
+  } = params
+
+  return prisma.asset.create({
+    data: {
+      workspaceId,
+      projectId: projectId || null,
+      taskId: taskId || null,
+      filename,
+      filePath,
+      storageProvider: 'LOCAL',
+      storageKey,
+      mimeType,
+      sizeBytes,
+      uploadedById: uploadedById || 'default-user',
+    },
+    include: {
+      uploader: { select: { id: true, name: true, avatarUrl: true } },
+    },
+  })
 }
