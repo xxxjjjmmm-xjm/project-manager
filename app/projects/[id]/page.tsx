@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { ArrowLeft, Pencil } from 'lucide-react'
@@ -36,6 +36,14 @@ export default function ProjectDetailPage() {
   const { tasks, moveTask } = useTasks(id)
   const [activeTab, setActiveTab] = useState<TabKey>('overview')
   const [editing, setEditing] = useState(false)
+
+  // Open a specific tab from a URL hash (e.g. /projects/[id]#kanban).
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '')
+    if (hash && TABS.some((tab) => tab.key === hash)) {
+      setActiveTab(hash as TabKey)
+    }
+  }, [])
 
   if (isLoading) {
     return (
