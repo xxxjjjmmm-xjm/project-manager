@@ -28,6 +28,7 @@ interface ListTasksParams {
   status?: string
   priority?: string
   assigneeId?: string
+  myTasks?: boolean
   search?: string
   page?: number
   limit?: number
@@ -39,6 +40,7 @@ export async function listTasks(params: ListTasksParams) {
     status,
     priority,
     assigneeId,
+    myTasks,
     search,
     page = 1,
     limit = 50,
@@ -48,7 +50,9 @@ export async function listTasks(params: ListTasksParams) {
 
   if (status) where.status = status
   if (priority) where.priority = priority
-  if (assigneeId) where.assigneeId = assigneeId
+  // "我的任务" — current user is the seeded default-user until auth lands (Phase 8)
+  if (myTasks) where.assigneeId = assigneeId ?? 'default-user'
+  else if (assigneeId) where.assigneeId = assigneeId
   if (search) {
     where.OR = [
       { title: { contains: search } },
