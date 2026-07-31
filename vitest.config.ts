@@ -10,6 +10,7 @@ export default defineConfig({
     hookTimeout: 30000,
     pool: 'forks',
     sequence: { concurrent: false },
+    exclude: ['tests/e2e/**', 'tests/global-setup.ts', 'node_modules/**', 'dist/**', '.next/**'],
   },
   resolve: {
     alias: {
