@@ -22,7 +22,10 @@ export {
 export { createActivity, getRecentActivity } from './activity.service'
 
 // File service
-export { listFiles, getFile, deleteFile } from './file.service'
+export { listFiles, getFile, deleteFile, createFile } from './file.service'
+
+// Team service
+export { listTeamMembers, inviteMember } from './team.service'
 
 // Dashboard service
 export {
