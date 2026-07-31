@@ -1,0 +1,56 @@
+export const zh = {
+  app: { title: '项目管理器', subtitle: '本地开发追踪器' },
+  nav: { dashboard: '仪表盘', projects: '项目列表', settings: '设置' },
+  dashboard: {
+    title: '仪表盘', totalProjects: '项目总数',
+    web: '前端', cli: '命令行', libraries: '类库',
+    mobile: '移动端', desktop: '桌面端', script: '脚本', other: '其他',
+    topTechnologies: '热门技术栈', recentlyAdded: '最近添加',
+    recentlyActive: '最近活跃', noData: '暂无数据', noProjects: '暂无项目',
+  },
+  projects: {
+    title: '项目列表', search: '搜索项目...',
+    allTypes: '全部类型', showArchived: '显示已归档', hideArchived: '隐藏已归档',
+    noProjects: '未找到项目', archived: '已归档',
+    name: '名称', type: '类型', techStack: '技术栈', lastCommit: '最后提交',
+    tags: '标签', actions: '操作', archive: '归档',
+    prev: '上一页', next: '下一页', page: '页', of: '/',
+  },
+  detail: {
+    overview: '概览', activity: '活动日志', claudeMd: 'CLAUDE.md',
+    loadClaude: '加载 CLAUDE.md', loading: '加载中...',
+    noReadme: '未找到 README', noActivity: '暂无活动',
+    editDetails: '编辑详情', notFound: '项目不存在', purge: '彻底删除',
+  },
+  detailMeta: {
+    type: '类型', totalCommits: '提交总数', remote: '远程仓库',
+    firstSeen: '首次发现', lastScanned: '最后扫描', lastCommit: '最后提交', na: '无',
+  },
+  tags: { title: '标签', newTag: '新标签' },
+  form: { editTitle: '编辑项目', name: '名称', description: '描述', save: '保存', saving: '保存中...' },
+  settings: {
+    title: '设置', scanPaths: '扫描路径', addPath: '添加路径',
+    pathPlaceholder: '例如 d:/projects', noPaths: '未配置扫描路径',
+    on: '启用', off: '禁用', delete: '删除',
+    manualScan: '手动扫描', scanNow: '立即扫描', scanning: '扫描中...',
+    lastScan: '上次扫描:', never: '从未',
+  },
+  topNav: { lastScan: '上次扫描:' },
+  sidebar: {
+    language: '语言', theme: '主题', light: '浅色', dark: '深色',
+    system: '跟随系统', version: 'v1.0.0', github: 'GitHub',
+  },
+  common: { retry: '重试', cancel: '取消', confirm: '确认', copyPath: '复制路径' },
+  toast: {
+    created: '创建成功', updated: '更新成功', deleted: '删除成功',
+    scanStarted: '扫描已启动', scanComplete: '扫描完成',
+    error: '操作失败', pathCopied: '路径已复制', archived: '已归档',
+  },
+  guide: {
+    title: '欢迎使用项目管理器',
+    step1: '1. 在设置中添加扫描路径',
+    step2: '2. 触发扫描以发现项目',
+    step3: '3. 浏览和管理你的项目',
+    goSettings: '前往设置',
+  },
+} as const

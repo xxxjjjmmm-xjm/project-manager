@@ -1,0 +1,57 @@
+export const en = {
+  app: { title: 'Project Manager', subtitle: 'Local Dev Tracker' },
+  nav: { dashboard: 'Dashboard', projects: 'Projects', settings: 'Settings' },
+  dashboard: {
+    title: 'Dashboard', totalProjects: 'Total Projects',
+    web: 'Web', cli: 'CLI', libraries: 'Libraries',
+    mobile: 'Mobile', desktop: 'Desktop', script: 'Script', other: 'Other',
+    topTechnologies: 'Top Technologies', recentlyAdded: 'Recently Added',
+    recentlyActive: 'Recently Active', noData: 'No data yet', noProjects: 'No projects yet',
+  },
+  projects: {
+    title: 'Projects', search: 'Search projects...',
+    allTypes: 'All Types', showArchived: 'Show Archived', hideArchived: 'Hide Archived',
+    noProjects: 'No projects found', archived: 'archived',
+    name: 'Name', type: 'Type', techStack: 'Tech Stack', lastCommit: 'Last Commit',
+    tags: 'Tags', actions: 'Actions', archive: 'Archive',
+    prev: 'Prev', next: 'Next', page: 'Page', of: 'of',
+  },
+  detail: {
+    overview: 'Overview', activity: 'Activity', claudeMd: 'CLAUDE.md',
+    loadClaude: 'Load CLAUDE.md', loading: 'Loading...',
+    noReadme: 'No README found', noActivity: 'No activity yet',
+    editDetails: 'Edit details', notFound: 'Project not found', purge: 'Purge',
+  },
+  detailMeta: {
+    type: 'Type', totalCommits: 'Total Commits', remote: 'Remote',
+    firstSeen: 'First Seen', lastScanned: 'Last Scanned', lastCommit: 'Last Commit', na: 'N/A',
+  },
+  tags: { title: 'Tags', newTag: 'New tag' },
+  form: { editTitle: 'Edit Project', name: 'Name', description: 'Description', save: 'Save', saving: 'Saving...' },
+  settings: {
+    title: 'Settings', scanPaths: 'Scan Paths', addPath: 'Add Path',
+    pathPlaceholder: 'e.g. d:/projects', noPaths: 'No scan paths configured',
+    on: 'On', off: 'Off', delete: 'Delete',
+    manualScan: 'Manual Scan', scanNow: 'Scan Now', scanning: 'Scanning...',
+    lastScan: 'Last:', never: 'Never',
+  },
+  topNav: { lastScan: 'Last scan:' },
+  sidebar: {
+    language: 'Language', theme: 'Theme', light: 'Light', dark: 'Dark',
+    system: 'System', version: 'v1.0.0', github: 'GitHub',
+  },
+  common: { retry: 'Retry', cancel: 'Cancel', confirm: 'Confirm', copyPath: 'Copy path' },
+  toast: {
+    created: 'Created', updated: 'Updated', deleted: 'Deleted',
+    scanStarted: 'Scan started', scanComplete: 'Scan complete',
+    error: 'Something went wrong', pathCopied: 'Path copied',
+    archived: 'Archived',
+  },
+  guide: {
+    title: 'Welcome to Project Manager',
+    step1: '1. Add scan paths in Settings',
+    step2: '2. Trigger a scan to discover projects',
+    step3: '3. Browse and manage your projects',
+    goSettings: 'Go to Settings',
+  },
+} as const
