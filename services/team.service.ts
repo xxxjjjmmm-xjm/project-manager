@@ -10,7 +10,9 @@ interface InviteMemberInput {
 export async function listTeamMembers(workspaceId: string) {
   const members = await prisma.workspaceMember.findMany({
     where: { workspaceId },
-    include: { user: true },
+    include: {
+      user: { select: { id: true, name: true, email: true, avatarUrl: true } },
+    },
     orderBy: { createdAt: 'asc' },
   })
 
@@ -60,9 +62,9 @@ export async function inviteMember(
     })
   }
 
-  // userId is unique across workspace members, so an existing row means conflict
+  // A user may join multiple workspaces, but only once per workspace
   const existing = await prisma.workspaceMember.findUnique({
-    where: { userId: user.id },
+    where: { workspaceId_userId: { workspaceId, userId: user.id } },
   })
   if (existing) {
     throw new AppError(
@@ -74,13 +76,15 @@ export async function inviteMember(
   }
 
   return prisma.workspaceMember.upsert({
-    where: { userId: user.id },
+    where: { workspaceId_userId: { workspaceId, userId: user.id } },
     create: {
       workspaceId,
       userId: user.id,
       role: input.role || 'MEMBER',
     },
     update: {},
-    include: { user: true },
+    include: {
+      user: { select: { id: true, name: true, email: true, avatarUrl: true } },
+    },
   })
 }

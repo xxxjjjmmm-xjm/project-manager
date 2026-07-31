@@ -32,7 +32,7 @@ interface ListProjectsParams {
 
 export async function listProjects(params: ListProjectsParams) {
   const { workspaceId, search, status, page = 1, limit = 20 } = params
-  const where: Prisma.ProjectWhereInput = { workspaceId }
+  const where: Prisma.ProjectWhereInput = { workspaceId, isArchived: false }
 
   if (search) {
     where.OR = [
