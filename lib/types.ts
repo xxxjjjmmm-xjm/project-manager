@@ -126,3 +126,70 @@ export interface CreateTagBody {
 export interface BatchTagBody {
   tagIds: string[]
 }
+
+// ─── Dashboard (Phase 4) ───
+
+export interface DashboardStatusEntry {
+  status: string
+  count: number
+}
+
+export interface DashboardPriorityEntry {
+  priority: string
+  count: number
+}
+
+export interface DashboardStats {
+  totalProjects: number
+  activeProjects: number
+  totalTasks: number
+  completedTasks: number
+  completionRate: number
+  totalMembers: number
+  statusDistribution: DashboardStatusEntry[]
+  priorityDistribution: DashboardPriorityEntry[]
+}
+
+export interface DashboardTask {
+  id: string
+  title: string
+  status: string
+  priority: string
+  dueDate: string | null
+  project: { id: string; name: string } | null
+  assignee: { id: string; name: string; avatarUrl: string } | null
+}
+
+export interface DashboardProjectDeadline {
+  id: string
+  name: string
+  dueDate: string | null
+  status: string
+  progress: number
+  owner: { id: string; name: string } | null
+}
+
+export interface DashboardTaskDeadline {
+  id: string
+  title: string
+  status: string
+  priority: string
+  dueDate: string | null
+  project: { id: string; name: string } | null
+  assignee: { id: string; name: string; avatarUrl: string } | null
+}
+
+export interface DeadlineData {
+  projects: DashboardProjectDeadline[]
+  tasks: DashboardTaskDeadline[]
+}
+
+export interface ActivityItem {
+  id: string
+  action: string
+  targetType: string
+  targetId: string
+  metadata: string
+  createdAt: string
+  actor: { id: string; name: string; avatarUrl: string } | null
+}
