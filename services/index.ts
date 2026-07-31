@@ -30,3 +30,6 @@ export {
   getTodayTasks,
   getUpcomingDeadlines,
 } from './dashboard.service'
+
+// Calendar service
+export { getCalendarEvents } from './calendar.service'
