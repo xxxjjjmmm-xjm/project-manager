@@ -36,3 +36,9 @@ export {
 
 // Calendar service
 export { getCalendarEvents } from './calendar.service'
+
+// Search service
+export { globalSearch } from './search.service'
+
+// Workspace service
+export { getWorkspace, updateWorkspace } from './workspace.service'
