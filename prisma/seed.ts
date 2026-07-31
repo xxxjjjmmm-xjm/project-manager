@@ -21,9 +21,10 @@ async function main() {
 
   console.log('Cleared existing data.')
 
-  // ── Create User ──
+  // ── Create User (deterministic ID to match schema defaults used by services) ──
   const user = await prisma.user.create({
     data: {
+      id: 'default-user',
       name: 'Demo User',
       email: 'demo@projecthub.dev',
       passwordHash: '$2b$10$placeholder_hash_for_demo123',
@@ -31,9 +32,10 @@ async function main() {
   })
   console.log(`  User: ${user.name} (${user.email})`)
 
-  // ── Create Workspace ──
+  // ── Create Workspace (deterministic ID to match schema defaults) ──
   const workspace = await prisma.workspace.create({
     data: {
+      id: 'default-workspace',
       name: 'My Workspace',
       ownerId: user.id,
     },
